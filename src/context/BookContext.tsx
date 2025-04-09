@@ -29,7 +29,7 @@ const sampleBooks: Book[] = [
     id: "1",
     title: "Sherlock Holmes",
     author: "Arthur Conan Doyle",
-    coverUrl: "/lovable-uploads/9544c276-86eb-4d42-84f6-9c710c59ec0b.png",
+    coverUrl: "https://m.media-amazon.com/images/I/71KIVYhFZhL._UF894,1000_QL80_.jpg",
     description: "As aventuras do detetive mais famoso do mundo.",
     categories: ["Ficção", "Mistério"]
   },
@@ -37,7 +37,7 @@ const sampleBooks: Book[] = [
     id: "2",
     title: "Dom Quixote",
     author: "Miguel de Cervantes",
-    coverUrl: "https://m.media-amazon.com/images/I/81wDJzLO+8L._AC_UF1000,1000_QL80_.jpg",
+    coverUrl: "https://images.tcdn.com.br/img/img_prod/980922/dom_quixote_75547_1_739ba8207c9fa969bdeb00315e5481dc.jpg",
     description: "A história de um cavalheiro que enlouquece após ler muitos livros de cavalaria.",
     categories: ["Clássico", "Aventura"]
   },
@@ -45,7 +45,7 @@ const sampleBooks: Book[] = [
     id: "3",
     title: "A Revolução dos Bichos",
     author: "George Orwell",
-    coverUrl: "https://m.media-amazon.com/images/I/61olgPxp37L._AC_UF1000,1000_QL80_.jpg",
+    coverUrl: "https://m.media-amazon.com/images/I/612QiXA+FyL._AC_UF1000,1000_QL80_DpWeblab_.jpg",
     description: "Uma fábula sobre a revolução dos animais de uma granja contra seus donos humanos.",
     categories: ["Ficção", "Política"]
   },
@@ -53,7 +53,7 @@ const sampleBooks: Book[] = [
     id: "4",
     title: "Tudo é Rio",
     author: "Carla Madeira",
-    coverUrl: "https://m.media-amazon.com/images/I/71QXOoQ+JCL._AC_UF1000,1000_QL80_.jpg",
+    coverUrl: "https://m.media-amazon.com/images/I/816Udvs9O7L._AC_UF1000,1000_QL80_.jpg",
     description: "Um romance sobre perdão e recomeços.",
     categories: ["Ficção", "Drama"]
   }
