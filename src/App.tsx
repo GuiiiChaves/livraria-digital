@@ -10,7 +10,6 @@ import HomePage from "./pages/HomePage";
 import ProductPage from "./pages/ProductPage";
 import FavoritePage from "./pages/FavoritePage";
 import ProfilePage from "./pages/ProfilePage";
-import SearchPage from "./pages/SearchPage";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 
@@ -29,7 +28,6 @@ const App = () => (
             <Route path="/product/:id" element={<ProductPage />} />
             <Route path="/favorites" element={<FavoritePage />} />
             <Route path="/profile" element={<ProfilePage />} />
-            <Route path="/search" element={<SearchPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

@@ -2,7 +2,6 @@
 import React, { useState } from 'react';
 import { useBooks } from '../context/BookContext';
 import Navbar from '../components/Navbar';
-import SearchBar from '../components/SearchBar';
 import BookCard from '../components/BookCard';
 import CategoryButton from '../components/CategoryButton';
 
@@ -26,15 +25,10 @@ const categoryToFilterMap: Record<string, string> = {
 
 const HomePage: React.FC = () => {
   const { books, isFavorite, toggleFavorite, getBooksByCategory } = useBooks();
-  const [searchTerm, setSearchTerm] = useState('');
   const [activeCategory, setActiveCategory] = useState('all');
 
-  // Filter books by active category and search term
-  const filteredBooks = getBooksByCategory(categoryToFilterMap[activeCategory])
-    .filter(book => 
-      book.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      book.author.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+  // Filter books by active category
+  const filteredBooks = getBooksByCategory(categoryToFilterMap[activeCategory]);
 
   return (
     <div className="pb-20 pt-4 px-4">
@@ -51,12 +45,6 @@ const HomePage: React.FC = () => {
           />
         </div>
       </div>
-
-      <SearchBar 
-        value={searchTerm}
-        onChange={setSearchTerm}
-        placeholder="Buscar por título ou autor..."
-      />
 
       <div className="mt-6">
         <h2 className="text-lg font-medium mb-3">Apenas para você</h2>

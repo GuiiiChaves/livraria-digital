@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Home, User, Heart, Search } from 'lucide-react';
+import { Home, User, Heart } from 'lucide-react';
 
 const Navbar: React.FC = () => {
   const location = useLocation();
@@ -16,10 +16,6 @@ const Navbar: React.FC = () => {
         <Link to="/" className={`flex flex-col items-center ${isActive('/') ? 'text-blue-500' : 'text-gray-500'}`}>
           <Home size={24} />
           <span className="text-xs mt-1">Início</span>
-        </Link>
-        <Link to="/search" className={`flex flex-col items-center ${isActive('/search') ? 'text-blue-500' : 'text-gray-500'}`}>
-          <Search size={24} />
-          <span className="text-xs mt-1">Buscar</span>
         </Link>
         <Link to="/favorites" className={`flex flex-col items-center ${isActive('/favorites') ? 'text-blue-500' : 'text-gray-500'}`}>
           <Heart size={24} />
