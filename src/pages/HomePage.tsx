@@ -34,7 +34,7 @@ const HomePage: React.FC = () => {
     <div className="pb-20 pt-4 px-4">
       <div className="flex items-center mb-6">
         <div className="flex-1">
-          <h1 className="text-xl font-bold">Olá, Jane</h1>
+          <h1 className="text-xl font-bold">Olá, Messi</h1>
           <p className="text-sm text-gray-500">O que vamos descobrir hoje?</p>
         </div>
         <div className="w-10 h-10 rounded-full overflow-hidden">
