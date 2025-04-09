@@ -18,9 +18,6 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({ name, avatarUrl }) => {
       </div>
       <p className="mt-2 text-md font-medium">{name}</p>
       <p className="text-sm text-gray-500">Olá, uma sugestão de leitura?</p>
-      <button className="mt-3 bg-black text-white text-sm rounded-full px-4 py-1">
-        Indicar um livro
-      </button>
     </div>
   );
 };
