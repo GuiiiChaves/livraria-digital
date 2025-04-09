@@ -17,7 +17,6 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({ name, avatarUrl }) => {
         />
       </div>
       <p className="mt-2 text-md font-medium">{name}</p>
-      <p className="text-sm text-gray-500">Olá, uma sugestão de leitura?</p>
     </div>
   );
 };

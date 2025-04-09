@@ -16,7 +16,7 @@ const ProductPage: React.FC = () => {
     return (
       <div className="flex flex-col items-center justify-center h-screen">
         <p>Livro não encontrado</p>
-        <Link to="/" className="mt-4 text-blue-500">Voltar para a página inicial</Link>
+        <Link to="/" className="mt-4 text-purple-500">Voltar para a página inicial</Link>
       </div>
     );
   }
@@ -81,7 +81,7 @@ const ProductPage: React.FC = () => {
           <p className="text-gray-700 mb-2">{book.author}</p>
           <p className="text-sm text-gray-600 mb-4">{book.description}</p>
           
-          <button className="w-full bg-black text-white py-2 rounded-md font-medium">
+          <button className="w-full bg-purple-600 text-white py-2 rounded-md font-medium">
             Comprar
           </button>
         </div>
