@@ -24,25 +24,25 @@ const ProductPage: React.FC = () => {
   // Mock reviews
   const reviews = [
     {
-      name: "Paulo Tigre",
-      date: "01/05/2023",
+      name: "Neymar Júnior",
+      date: "01/05/2025",
       rating: 5,
       comment: "Um clássico atemporal que todos deveriam ler. A narrativa é envolvente e os personagens são muito bem construídos.",
-      avatarUrl: "https://randomuser.me/api/portraits/men/32.jpg"
+      avatarUrl: "https://p2.trrsf.com/image/fget/cf/774/0/images.terra.com/2025/01/28/1624869969-por-que-neymar-esta-voltando-para-o-brasil-jogador-tomou-decisao-crucial-saiba-detalhes.jpg"
     },
     {
-      name: "Maria Costa",
-      date: "14/04/2023",
+      name: "Cristiano Ronaldo",
+      date: "07/07/2007",
       rating: 4,
       comment: "Gostei muito do livro, apesar de algumas partes serem um pouco lentas. Vale a pena a leitura.",
-      avatarUrl: "https://randomuser.me/api/portraits/women/68.jpg"
+      avatarUrl: "https://assets.goal.com/images/v3/blt2aaca933046f8b00/Cristiano%20Ronaldo%20Portugal%202024%20(4).jpg"
     },
     {
-      name: "Gabriel Correia",
+      name: "Ronaldinho Gaúcho",
       date: "02/03/2023",
       rating: 5,
       comment: "Seguindo à risca o formato das histórias policiais clássicas, este livro entrega exatamente o que promete.",
-      avatarUrl: "https://randomuser.me/api/portraits/men/22.jpg"
+      avatarUrl: "https://br.web.img2.acsta.net/c_310_420/medias/nmedia/18/95/51/09/20410083.jpg"
     }
   ];
 
