@@ -39,7 +39,7 @@ const HomePage: React.FC = () => {
         </div>
         <div className="w-10 h-10 rounded-full overflow-hidden">
           <img 
-            src="https://randomuser.me/api/portraits/women/44.jpg" 
+            src="https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.goal.com%2Fbr%2Flistas%2Fa-magoa-de-lionel-messi-com-o-psg-fui-o-unico-campeao-da-copa-do-mundo-a-nao-ser-reconhecido%2Fblt5dd83c9016d41e88&psig=AOvVaw1MEz1J5vdMPnz8gsHq6xQS&ust=1744322509114000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCPj4h-_5y4wDFQAAAAAdAAAAABAE" 
             alt="User" 
             className="w-full h-full object-cover"
           />
