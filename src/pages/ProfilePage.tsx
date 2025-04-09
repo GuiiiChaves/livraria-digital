@@ -11,7 +11,7 @@ const ProfilePage: React.FC = () => {
   return (
     <div className="pb-20">
       <ProfileHeader 
-        name="Maria Silva" 
+        name="Lionel Messi" 
         avatarUrl="https://www.cnnbrasil.com.br/wp-content/uploads/sites/12/2024/06/messi-argentina-guatemala-e1718811255101.jpg?w=1200&h=900&crop=1" 
       />
       
