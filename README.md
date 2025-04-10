@@ -32,7 +32,7 @@ Utilizamos o GitHub Issues para acompanhamento de tarefas, bugs e melhorias.
 
 
 
-🔗 [Acessar GitHub Issues](https://github.com/SEU_USUARIO/SEU_REPOSITORIO/issues)
+🔗 [Acessar GitHub Issues](https://github.com/GuiiiChaves/livraria-digital/issues)
 
 ---
 
