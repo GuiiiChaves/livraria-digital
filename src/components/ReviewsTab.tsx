@@ -16,7 +16,7 @@ const mockReviews: ReviewData[] = [
   {
     id: "1",
     bookTitle: "Sherlock Holmes",
-    bookCover: "/lovable-uploads/9544c276-86eb-4d42-84f6-9c710c59ec0b.png",
+    bookCover: "https://m.media-amazon.com/images/I/51071nF0pTL._AC_UF1000,1000_QL80_.jpg",
     rating: 4,
     date: "12/03/2023",
     comment: "Um clássico atemporal que todos deveriam ler. A narrativa é envolvente e os personagens são muito bem construídos."
@@ -24,7 +24,7 @@ const mockReviews: ReviewData[] = [
   {
     id: "2",
     bookTitle: "Dom Quixote",
-    bookCover: "https://m.media-amazon.com/images/I/81wDJzLO+8L._AC_UF1000,1000_QL80_.jpg",
+    bookCover: "https://editorasetimoselo.com.br/image/cache/data/api/produtos/14250-515x800.jpg?1670411792",
     rating: 5,
     date: "25/01/2023",
     comment: "Uma obra prima da literatura mundial. Cervantes cria uma história fascinante com personagens memoráveis."
