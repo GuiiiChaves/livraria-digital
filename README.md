@@ -59,3 +59,17 @@ npm install
 # Inicie o frontend (Next.js)
 npm run dev
 ```
+
+👥 Integrantes
+
+Arthur Orange
+
+Pedro Bim
+
+João Miguel
+
+Pedro Falcão
+
+Guilherme Chaves
+
+Yuri França
