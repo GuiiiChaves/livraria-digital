@@ -21,6 +21,14 @@ O diagrama abaixo representa a arquitetura da aplicação, desde a interface com
 
 
 
+## Trello
+
+Segue abaixo a documentação e tasks do projeto, utilizando a plataforma Trello.
+
+📷 ![eaa46047-56c1-4ee5-8434-ac965057baf5](https://trello.com/b/7g8W8zI4/sistema-de-gerenciamento-de-livros)
+
+
+
 
 ---
 
