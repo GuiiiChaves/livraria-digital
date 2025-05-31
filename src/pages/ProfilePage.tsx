@@ -12,7 +12,7 @@ const ProfilePage: React.FC = () => {
     <div className="pb-20">
       <ProfileHeader 
         name="Lionel Messi" 
-        avatarUrl="https://www.cnnbrasil.com.br/wp-content/uploads/sites/12/2024/06/messi-argentina-guatemala-e1718811255101.jpg?w=1200&h=900&crop=1" 
+        avatarUrl="https://www.ogol.com.br/img/jogadores/new/05/92/10592_lionel_messi_20250220100736.png" 
       />
       
       <Tabs defaultValue="reviews" className="w-full">
