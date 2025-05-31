@@ -27,7 +27,7 @@ const HomePage: React.FC = () => {
   const { books, isFavorite, toggleFavorite, getBooksByCategory } = useBooks();
   const [activeCategory, setActiveCategory] = useState('all');
 
-  // Filter books by active category
+ 
   const filteredBooks = getBooksByCategory(categoryToFilterMap[activeCategory]);
 
   return (
