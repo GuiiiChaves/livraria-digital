@@ -79,7 +79,7 @@ const ProductPage: React.FC = () => {
       id: 4,
       title: "Iracema",
       author: "José de Alencar",
-      imageUrl: "https://m.media-amazon.com/images/I/81dQ4061MaL.jpg"
+      imageUrl: "https://m.media-amazon.com/images/I/71LCDi6E2oL.jpg"
     }
   ];
 
