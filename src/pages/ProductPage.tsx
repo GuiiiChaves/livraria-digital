@@ -5,10 +5,12 @@ import { useBooks } from '../context/BookContext';
 import { ArrowLeft, Heart, Share2 } from 'lucide-react';
 import ReviewCard from '../components/ReviewCard';
 import Navbar from '../components/Navbar';
+import { useToast } from '../hooks/use-toast';
 
 const ProductPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  const { getBookById, isFavorite, toggleFavorite } = useBooks();
+  const { getBookById, isFavorite, toggleFavorite, reserveBook, isReserved } = useBooks();
+  const { toast } = useToast();
   
   const book = getBookById(id || '');
   
@@ -20,6 +22,14 @@ const ProductPage: React.FC = () => {
       </div>
     );
   }
+
+  const handleReserve = () => {
+    reserveBook(book.id);
+    toast({
+      title: "Livro reservado!",
+      description: `"${book.title}" foi adicionado aos seus livros reservados.`,
+    });
+  };
 
   // Mock reviews
   const reviews = [
@@ -81,8 +91,16 @@ const ProductPage: React.FC = () => {
           <p className="text-gray-700 mb-2">{book.author}</p>
           <p className="text-sm text-gray-600 mb-4">{book.description}</p>
           
-          <button className="w-full bg-purple-600 text-white py-2 rounded-md font-medium">
-            Comprar
+          <button 
+            className={`w-full py-2 rounded-md font-medium ${
+              isReserved(book.id) 
+                ? "bg-green-600 text-white cursor-not-allowed" 
+                : "bg-purple-600 text-white hover:bg-purple-700"
+            }`}
+            onClick={handleReserve}
+            disabled={isReserved(book.id)}
+          >
+            {isReserved(book.id) ? "Reservado" : "Reservar"}
           </button>
         </div>
       </div>

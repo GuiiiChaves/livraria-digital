@@ -9,6 +9,7 @@ import { BookProvider } from "./context/BookContext";
 import HomePage from "./pages/HomePage";
 import ProductPage from "./pages/ProductPage";
 import FavoritePage from "./pages/FavoritePage";
+import ReservedPage from "./pages/ReservedPage";
 import ProfilePage from "./pages/ProfilePage";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
@@ -27,6 +28,7 @@ const App = () => (
             <Route path="/home" element={<HomePage />} />
             <Route path="/product/:id" element={<ProductPage />} />
             <Route path="/favorites" element={<FavoritePage />} />
+            <Route path="/reserved" element={<ReservedPage />} />
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>

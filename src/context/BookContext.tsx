@@ -14,10 +14,14 @@ export interface Book {
 interface BookContextType {
   books: Book[];
   favoriteBooks: string[];
+  reservedBooks: string[];
   toggleFavorite: (bookId: string) => void;
   isFavorite: (bookId: string) => boolean;
+  reserveBook: (bookId: string) => void;
+  isReserved: (bookId: string) => boolean;
   getBooksByCategory: (category: string) => Book[];
   getBookById: (id: string) => Book | undefined;
+  getReservedBooks: () => Book[];
 }
 
 // Create context
@@ -63,6 +67,7 @@ const sampleBooks: Book[] = [
 export const BookProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [books] = useState<Book[]>(sampleBooks);
   const [favoriteBooks, setFavoriteBooks] = useState<string[]>([]);
+  const [reservedBooks, setReservedBooks] = useState<string[]>([]);
 
   // Load favorites from localStorage
   useEffect(() => {
@@ -72,10 +77,23 @@ export const BookProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   }, []);
 
+  // Load reserved books from localStorage
+  useEffect(() => {
+    const savedReserved = localStorage.getItem('reservedBooks');
+    if (savedReserved) {
+      setReservedBooks(JSON.parse(savedReserved));
+    }
+  }, []);
+
   // Save favorites to localStorage
   useEffect(() => {
     localStorage.setItem('favoriteBooks', JSON.stringify(favoriteBooks));
   }, [favoriteBooks]);
+
+  // Save reserved books to localStorage
+  useEffect(() => {
+    localStorage.setItem('reservedBooks', JSON.stringify(reservedBooks));
+  }, [reservedBooks]);
 
   const toggleFavorite = (bookId: string) => {
     setFavoriteBooks(prev => {
@@ -91,6 +109,19 @@ export const BookProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return favoriteBooks.includes(bookId);
   };
 
+  const reserveBook = (bookId: string) => {
+    setReservedBooks(prev => {
+      if (!prev.includes(bookId)) {
+        return [...prev, bookId];
+      }
+      return prev;
+    });
+  };
+
+  const isReserved = (bookId: string): boolean => {
+    return reservedBooks.includes(bookId);
+  };
+
   const getBooksByCategory = (category: string): Book[] => {
     if (category === 'Todos') return books;
     return books.filter(book => book.categories.includes(category));
@@ -100,14 +131,22 @@ export const BookProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return books.find(book => book.id === id);
   };
 
+  const getReservedBooks = (): Book[] => {
+    return books.filter(book => reservedBooks.includes(book.id));
+  };
+
   return (
     <BookContext.Provider value={{
       books,
       favoriteBooks,
+      reservedBooks,
       toggleFavorite,
       isFavorite,
+      reserveBook,
+      isReserved,
       getBooksByCategory,
-      getBookById
+      getBookById,
+      getReservedBooks
     }}>
       {children}
     </BookContext.Provider>
