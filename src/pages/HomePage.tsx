@@ -39,7 +39,7 @@ const HomePage: React.FC = () => {
         </div>
         <div className="w-10 h-10 rounded-full overflow-hidden">
           <img 
-            src="https://www.cnnbrasil.com.br/wp-content/uploads/sites/12/2024/06/messi-argentina-guatemala-e1718811255101.jpg?w=1200&h=900&crop=1" 
+            src="https://www.ogol.com.br/img/jogadores/new/05/92/10592_lionel_messi_20250220100736.png"
             alt="User" 
             className="w-full h-full object-cover"
           />
