@@ -61,25 +61,25 @@ const ProductPage: React.FC = () => {
       id: 1,
       title: "O Cortiço",
       author: "Aluísio Azevedo",
-      imageUrl: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=200"
+      imageUrl: "https://m.media-amazon.com/images/I/61KSQiD6CsL._AC_UF1000,1000_QL80_.jpg"
     },
     {
       id: 2,
       title: "Quincas Borba",
       author: "Machado de Assis",
-      imageUrl: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200"
+      imageUrl: "https://m.media-amazon.com/images/I/61Kt3d+mhuL.jpg"
     },
     {
       id: 3,
       title: "O Guarani",
       author: "José de Alencar",
-      imageUrl: "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=200"
+      imageUrl: "https://m.media-amazon.com/images/I/91-16juFmnL._AC_UF1000,1000_QL80_.jpg"
     },
     {
       id: 4,
       title: "Iracema",
       author: "José de Alencar",
-      imageUrl: "https://images.unsplash.com/photo-1512820790803-83ca734da794?w=200"
+      imageUrl: "https://m.media-amazon.com/images/I/81dQ4061MaL.jpg"
     }
   ];
 
