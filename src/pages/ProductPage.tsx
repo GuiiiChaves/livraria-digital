@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useBooks } from '../context/BookContext';
@@ -53,6 +52,34 @@ const ProductPage: React.FC = () => {
       rating: 5,
       comment: "Seguindo à risca o formato das histórias policiais clássicas, este livro entrega exatamente o que promete.",
       avatarUrl: "https://br.web.img2.acsta.net/c_310_420/medias/nmedia/18/95/51/09/20410083.jpg"
+    }
+  ];
+
+  // Recommended books with real titles and configurable image URLs
+  const recommendedBooks = [
+    {
+      id: 1,
+      title: "O Cortiço",
+      author: "Aluísio Azevedo",
+      imageUrl: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=200"
+    },
+    {
+      id: 2,
+      title: "Quincas Borba",
+      author: "Machado de Assis",
+      imageUrl: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200"
+    },
+    {
+      id: 3,
+      title: "O Guarani",
+      author: "José de Alencar",
+      imageUrl: "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=200"
+    },
+    {
+      id: 4,
+      title: "Iracema",
+      author: "José de Alencar",
+      imageUrl: "https://images.unsplash.com/photo-1512820790803-83ca734da794?w=200"
     }
   ];
 
@@ -125,12 +152,15 @@ const ProductPage: React.FC = () => {
         <h2 className="text-lg font-medium mb-3">Ver mais recomendações</h2>
         <div className="overflow-x-auto">
           <div className="flex space-x-3">
-            {/* Placeholder for book recommendations */}
-            {[1, 2, 3].map((i) => (
-              <div key={i} className="w-24 flex-shrink-0">
-                <div className="w-full h-32 bg-gray-200 rounded-md"></div>
-                <p className="text-xs mt-1 font-medium truncate">Livro Recomendado</p>
-                <p className="text-xs text-gray-500">Autor</p>
+            {recommendedBooks.map((recommendedBook) => (
+              <div key={recommendedBook.id} className="w-24 flex-shrink-0">
+                <img 
+                  src={recommendedBook.imageUrl} 
+                  alt={recommendedBook.title}
+                  className="w-full h-32 object-cover rounded-md"
+                />
+                <p className="text-xs mt-1 font-medium truncate">{recommendedBook.title}</p>
+                <p className="text-xs text-gray-500">{recommendedBook.author}</p>
               </div>
             ))}
           </div>
