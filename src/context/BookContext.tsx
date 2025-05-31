@@ -19,6 +19,7 @@ interface BookContextType {
   isFavorite: (bookId: string) => boolean;
   reserveBook: (bookId: string) => void;
   isReserved: (bookId: string) => boolean;
+  cancelReservation: (bookId: string) => void;
   getBooksByCategory: (category: string) => Book[];
   getBookById: (id: string) => Book | undefined;
   getReservedBooks: () => Book[];
@@ -122,6 +123,10 @@ export const BookProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return reservedBooks.includes(bookId);
   };
 
+  const cancelReservation = (bookId: string) => {
+    setReservedBooks(prev => prev.filter(id => id !== bookId));
+  };
+
   const getBooksByCategory = (category: string): Book[] => {
     if (category === 'Todos') return books;
     return books.filter(book => book.categories.includes(category));
@@ -144,6 +149,7 @@ export const BookProvider: React.FC<{ children: React.ReactNode }> = ({ children
       isFavorite,
       reserveBook,
       isReserved,
+      cancelReservation,
       getBooksByCategory,
       getBookById,
       getReservedBooks

@@ -1,12 +1,31 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { useBooks } from '../context/BookContext';
 import Navbar from '../components/Navbar';
 import BookCard from '../components/BookCard';
+import { 
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '../components/ui/alert-dialog';
+import { Button } from '../components/ui/button';
+import { X } from 'lucide-react';
 
 const ReservedPage: React.FC = () => {
-  const { getReservedBooks, isFavorite, toggleFavorite } = useBooks();
+  const { getReservedBooks, isFavorite, toggleFavorite, cancelReservation } = useBooks();
   const reservedBooks = getReservedBooks();
+  const [selectedBookId, setSelectedBookId] = useState<string | null>(null);
+
+  const handleCancelReservation = (bookId: string) => {
+    cancelReservation(bookId);
+    setSelectedBookId(null);
+  };
 
   return (
     <div className="pb-20 pt-4 px-4">
@@ -22,17 +41,55 @@ const ReservedPage: React.FC = () => {
           </p>
         </div>
       ) : (
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 gap-4">
           {reservedBooks.map(book => (
-            <BookCard 
-              key={book.id}
-              id={book.id}
-              title={book.title}
-              author={book.author}
-              coverUrl={book.coverUrl}
-              isFavorite={isFavorite(book.id)}
-              onToggleFavorite={() => toggleFavorite(book.id)}
-            />
+            <div key={book.id} className="flex items-center bg-white rounded-lg shadow-sm p-4">
+              <div className="flex-1">
+                <BookCard 
+                  id={book.id}
+                  title={book.title}
+                  author={book.author}
+                  coverUrl={book.coverUrl}
+                  isFavorite={isFavorite(book.id)}
+                  onToggleFavorite={() => toggleFavorite(book.id)}
+                />
+              </div>
+              <div className="ml-4">
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <Button 
+                      variant="outline" 
+                      size="sm"
+                      className="text-red-600 border-red-600 hover:bg-red-50"
+                      onClick={() => setSelectedBookId(book.id)}
+                    >
+                      <X size={16} className="mr-1" />
+                      Cancelar Reserva
+                    </Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>Cancelar Reserva</AlertDialogTitle>
+                      <AlertDialogDescription className="space-y-2">
+                        <p>Tem certeza que deseja cancelar a reserva do livro "{book.title}"?</p>
+                        <p className="text-sm text-orange-600 font-medium">
+                          ⚠️ Após o cancelamento, uma nova reserva só poderá ser feita após 3 dias úteis.
+                        </p>
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Não, manter reserva</AlertDialogCancel>
+                      <AlertDialogAction 
+                        onClick={() => handleCancelReservation(book.id)}
+                        className="bg-red-600 hover:bg-red-700"
+                      >
+                        Sim, cancelar reserva
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+              </div>
+            </div>
           ))}
         </div>
       )}
