@@ -1,10 +1,8 @@
-
 import React, { useState, useEffect } from 'react';
 import { useBooks } from '../context/BookContext';
 import Navbar from '../components/Navbar';
 import BookCard from '../components/BookCard';
 import CategoryButton from '../components/CategoryButton';
-import { User, Mail, Phone, CreditCard, BookOpen } from 'lucide-react';
 
 const categories = [
   { id: 'all', label: 'Todos', icon: 'https://cdn-icons-png.flaticon.com/512/3845/3845826.png' },
@@ -24,19 +22,19 @@ const categoryToFilterMap: Record<string, string> = {
   'drama': 'Drama',
 };
 
-const avatarIcons = {
-  user: User,
-  mail: Mail,
-  phone: Phone,
-  card: CreditCard,
-  book: BookOpen,
+const avatarMap: Record<string, string> = {
+  'modern-woman': 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=100&h=100&fit=crop&crop=face',
+  'mage': 'https://images.unsplash.com/photo-1470813740244-df37b8c1edcb?w=100&h=100&fit=crop&crop=center',
+  'tech-person': 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=100&h=100&fit=crop&crop=face',
+  'robot-knight': 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=100&h=100&fit=crop&crop=center',
+  'scholar': 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face',
 };
 
 const HomePage: React.FC = () => {
   const { books, isFavorite, toggleFavorite, getBooksByCategory } = useBooks();
   const [activeCategory, setActiveCategory] = useState('all');
   const [userName, setUserName] = useState('Usuário');
-  const [userAvatar, setUserAvatar] = useState('user');
+  const [userAvatar, setUserAvatar] = useState('modern-woman');
 
   useEffect(() => {
     const storedName = localStorage.getItem('userName');
@@ -47,7 +45,7 @@ const HomePage: React.FC = () => {
   }, []);
 
   const filteredBooks = getBooksByCategory(categoryToFilterMap[activeCategory]);
-  const AvatarIcon = avatarIcons[userAvatar as keyof typeof avatarIcons] || User;
+  const avatarImage = avatarMap[userAvatar] || avatarMap['modern-woman'];
 
   return (
     <div className="pb-20 pt-4 px-4">
@@ -56,8 +54,12 @@ const HomePage: React.FC = () => {
           <h1 className="text-xl font-bold">Olá, {userName}</h1>
           <p className="text-sm text-gray-500">O que vamos descobrir hoje?</p>
         </div>
-        <div className="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center">
-          <AvatarIcon className="w-6 h-6 text-purple-600" />
+        <div className="w-12 h-12 rounded-full overflow-hidden">
+          <img 
+            src={avatarImage} 
+            alt="Avatar do usuário"
+            className="w-full h-full object-cover"
+          />
         </div>
       </div>
 

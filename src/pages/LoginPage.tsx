@@ -5,20 +5,39 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { User, Mail, Phone, CreditCard, BookOpen } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 const avatarOptions = [
-  { id: 'user', icon: User, label: 'Usuário' },
-  { id: 'mail', icon: Mail, label: 'Email' },
-  { id: 'phone', icon: Phone, label: 'Telefone' },
-  { id: 'card', icon: CreditCard, label: 'Cartão' },
-  { id: 'book', icon: BookOpen, label: 'Livro' },
+  { 
+    id: 'modern-woman', 
+    image: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=100&h=100&fit=crop&crop=face',
+    label: 'Moderna' 
+  },
+  { 
+    id: 'mage', 
+    image: 'https://images.unsplash.com/photo-1470813740244-df37b8c1edcb?w=100&h=100&fit=crop&crop=center',
+    label: 'Mago' 
+  },
+  { 
+    id: 'tech-person', 
+    image: 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=100&h=100&fit=crop&crop=face',
+    label: 'Tech' 
+  },
+  { 
+    id: 'robot-knight', 
+    image: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=100&h=100&fit=crop&crop=center',
+    label: 'Cavaleiro' 
+  },
+  { 
+    id: 'scholar', 
+    image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face',
+    label: 'Estudioso' 
+  },
 ];
 
 const LoginPage: React.FC = () => {
   const navigate = useNavigate();
-  const [selectedAvatar, setSelectedAvatar] = useState('user');
+  const [selectedAvatar, setSelectedAvatar] = useState('modern-woman');
   const [loginData, setLoginData] = useState({
     email: '',
     password: ''
@@ -34,7 +53,6 @@ const LoginPage: React.FC = () => {
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    // Simular login - em uma aplicação real, você faria a autenticação aqui
     console.log('Login:', loginData);
     localStorage.setItem('isLoggedIn', 'true');
     localStorage.setItem('userAvatar', selectedAvatar);
@@ -47,7 +65,6 @@ const LoginPage: React.FC = () => {
       alert('As senhas não coincidem');
       return;
     }
-    // Simular cadastro - em uma aplicação real, você salvaria no backend
     console.log('Cadastro:', registerData, 'Avatar:', selectedAvatar);
     localStorage.setItem('isLoggedIn', 'true');
     localStorage.setItem('userAvatar', selectedAvatar);
@@ -167,24 +184,26 @@ const LoginPage: React.FC = () => {
                 
                 <div className="space-y-2">
                   <Label>Escolha seu avatar</Label>
-                  <div className="grid grid-cols-5 gap-2">
-                    {avatarOptions.map((option) => {
-                      const IconComponent = option.icon;
-                      return (
-                        <button
-                          key={option.id}
-                          type="button"
-                          onClick={() => setSelectedAvatar(option.id)}
-                          className={`p-3 rounded-lg border-2 transition-colors ${
-                            selectedAvatar === option.id
-                              ? 'border-purple-500 bg-purple-50'
-                              : 'border-gray-200 hover:border-gray-300'
-                          }`}
-                        >
-                          <IconComponent className="w-6 h-6 mx-auto" />
-                        </button>
-                      );
-                    })}
+                  <div className="grid grid-cols-3 gap-2">
+                    {avatarOptions.map((option) => (
+                      <button
+                        key={option.id}
+                        type="button"
+                        onClick={() => setSelectedAvatar(option.id)}
+                        className={`flex flex-col items-center p-2 rounded-lg border-2 transition-colors ${
+                          selectedAvatar === option.id
+                            ? 'border-purple-500 bg-purple-50'
+                            : 'border-gray-200 hover:border-gray-300'
+                        }`}
+                      >
+                        <img 
+                          src={option.image} 
+                          alt={option.label}
+                          className="w-12 h-12 rounded-full object-cover mb-1"
+                        />
+                        <span className="text-xs">{option.label}</span>
+                      </button>
+                    ))}
                   </div>
                 </div>
                 
