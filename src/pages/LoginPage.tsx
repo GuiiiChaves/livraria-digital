@@ -159,26 +159,6 @@ const LoginPage: React.FC = () => {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="cpf">CPF</Label>
-                  <Input
-                    id="cpf"
-                    placeholder="000.000.000-00"
-                    value={registerData.cpf}
-                    onChange={(e) => setRegisterData({...registerData, cpf: e.target.value})}
-                    required
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="phone">Telefone</Label>
-                  <Input
-                    id="phone"
-                    placeholder="(00) 00000-0000"
-                    value={registerData.phone}
-                    onChange={(e) => setRegisterData({...registerData, phone: e.target.value})}
-                    required
-                  />
-                </div>
-                <div className="space-y-2">
                   <Label htmlFor="registerEmail">Email</Label>
                   <Input
                     id="registerEmail"
