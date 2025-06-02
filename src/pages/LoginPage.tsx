@@ -9,12 +9,12 @@ import { useNavigate } from 'react-router-dom';
 
 const avatarOptions = [
   { 
-    id: 'cyber-bot', 
+    id: 'cyber-girl', 
     image: 'https://img.freepik.com/vetores-premium/robo-bonito-icon-ilustracao-conceito-de-icone-de-robo-de-tecnologia-isolado-estilo-cartoon-plana_138676-1219.jpg',
     label: 'Cyber' 
   },
   { 
-    id: 'mystic', 
+    id: 'mystic-scholar', 
     image: 'https://cdn-icons-png.flaticon.com/512/2793/2793202.png',
     label: 'Mago' 
   },
@@ -37,7 +37,7 @@ const avatarOptions = [
 
 const LoginPage: React.FC = () => {
   const navigate = useNavigate();
-  const [selectedAvatar, setSelectedAvatar] = useState('cyber-bot');
+  const [selectedAvatar, setSelectedAvatar] = useState('cyber-girl');
   const [loginData, setLoginData] = useState({
     email: '',
     password: ''
