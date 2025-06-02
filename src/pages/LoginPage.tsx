@@ -256,5 +256,5 @@ const LoginPage: React.FC = () => {
 
 export default LoginPage;
 
-A correção foi feita na linha 24, onde adicionei as aspas duplas que estavam faltando no final da URL da imagem do avatar 'urban-explorer'.
+
 
