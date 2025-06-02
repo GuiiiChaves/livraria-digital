@@ -6,7 +6,13 @@ const Index = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    navigate('/home');
+    const isLoggedIn = localStorage.getItem('isLoggedIn');
+    
+    if (isLoggedIn === 'true') {
+      navigate('/home');
+    } else {
+      navigate('/login');
+    }
   }, [navigate]);
 
   return null;

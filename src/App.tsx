@@ -11,6 +11,7 @@ import ProductPage from "./pages/ProductPage";
 import FavoritePage from "./pages/FavoritePage";
 import ReservedPage from "./pages/ReservedPage";
 import ProfilePage from "./pages/ProfilePage";
+import LoginPage from "./pages/LoginPage";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 
@@ -25,6 +26,7 @@ const App = () => (
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Index />} />
+            <Route path="/login" element={<LoginPage />} />
             <Route path="/home" element={<HomePage />} />
             <Route path="/product/:id" element={<ProductPage />} />
             <Route path="/favorites" element={<FavoritePage />} />

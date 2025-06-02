@@ -1,9 +1,9 @@
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useBooks } from '../context/BookContext';
 import Navbar from '../components/Navbar';
 import BookCard from '../components/BookCard';
 import CategoryButton from '../components/CategoryButton';
+import { User, Mail, Phone, CreditCard, BookOpen } from 'lucide-react';
 
 const categories = [
   { id: 'all', label: 'Todos', icon: 'https://cdn-icons-png.flaticon.com/512/3845/3845826.png' },
@@ -23,26 +23,40 @@ const categoryToFilterMap: Record<string, string> = {
   'drama': 'Drama',
 };
 
+const avatarIcons = {
+  user: User,
+  mail: Mail,
+  phone: Phone,
+  card: CreditCard,
+  book: BookOpen,
+};
+
 const HomePage: React.FC = () => {
   const { books, isFavorite, toggleFavorite, getBooksByCategory } = useBooks();
   const [activeCategory, setActiveCategory] = useState('all');
+  const [userName, setUserName] = useState('Usuário');
+  const [userAvatar, setUserAvatar] = useState('user');
 
- 
+  useEffect(() => {
+    const storedName = localStorage.getItem('userName');
+    const storedAvatar = localStorage.getItem('userAvatar');
+    
+    if (storedName) setUserName(storedName);
+    if (storedAvatar) setUserAvatar(storedAvatar);
+  }, []);
+
   const filteredBooks = getBooksByCategory(categoryToFilterMap[activeCategory]);
+  const AvatarIcon = avatarIcons[userAvatar as keyof typeof avatarIcons] || User;
 
   return (
     <div className="pb-20 pt-4 px-4">
       <div className="flex items-center mb-6">
         <div className="flex-1">
-          <h1 className="text-xl font-bold">Olá, Messi</h1>
+          <h1 className="text-xl font-bold">Olá, {userName}</h1>
           <p className="text-sm text-gray-500">O que vamos descobrir hoje?</p>
         </div>
-        <div className="w-10 h-10 rounded-full overflow-hidden">
-          <img 
-            src="https://www.ogol.com.br/img/jogadores/new/05/92/10592_lionel_messi_20250220100736.png"
-            alt="User" 
-            className="w-full h-full object-cover"
-          />
+        <div className="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center">
+          <AvatarIcon className="w-6 h-6 text-purple-600" />
         </div>
       </div>
 
