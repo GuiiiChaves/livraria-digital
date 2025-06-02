@@ -23,18 +23,18 @@ const categoryToFilterMap: Record<string, string> = {
 };
 
 const avatarMap: Record<string, string> = {
-  'modern-woman': 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=100&h=100&fit=crop&crop=face',
-  'mage': 'https://images.unsplash.com/photo-1470813740244-df37b8c1edcb?w=100&h=100&fit=crop&crop=center',
-  'tech-person': 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=100&h=100&fit=crop&crop=face',
-  'robot-knight': 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=100&h=100&fit=crop&crop=center',
-  'scholar': 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face',
+  'cyber-girl': 'https://images.unsplash.com/photo-1544725176-7c40e5a71c5e?w=100&h=100&fit=crop&crop=face',
+  'mystic-scholar': 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face',
+  'urban-explorer': 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face',
+  'creative-mind': 'https://images.unsplash.com/photo-1494790108755-2616b612b1e5?w=100&h=100&fit=crop&crop=face',
+  'wise-guardian': 'https://images.unsplash.com/photo-1566492031773-4f4e44671d66?w=100&h=100&fit=crop&crop=face',
 };
 
 const HomePage: React.FC = () => {
   const { books, isFavorite, toggleFavorite, getBooksByCategory } = useBooks();
   const [activeCategory, setActiveCategory] = useState('all');
   const [userName, setUserName] = useState('Usuário');
-  const [userAvatar, setUserAvatar] = useState('modern-woman');
+  const [userAvatar, setUserAvatar] = useState('cyber-girl');
 
   useEffect(() => {
     const storedName = localStorage.getItem('userName');
@@ -45,7 +45,7 @@ const HomePage: React.FC = () => {
   }, []);
 
   const filteredBooks = getBooksByCategory(categoryToFilterMap[activeCategory]);
-  const avatarImage = avatarMap[userAvatar] || avatarMap['modern-woman'];
+  const avatarImage = avatarMap[userAvatar] || avatarMap['cyber-girl'];
 
   return (
     <div className="pb-20 pt-4 px-4">
@@ -54,12 +54,17 @@ const HomePage: React.FC = () => {
           <h1 className="text-xl font-bold">Olá, {userName}</h1>
           <p className="text-sm text-gray-500">O que vamos descobrir hoje?</p>
         </div>
-        <div className="w-12 h-12 rounded-full overflow-hidden">
-          <img 
-            src={avatarImage} 
-            alt="Avatar do usuário"
-            className="w-full h-full object-cover"
-          />
+        <div className="relative">
+          <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-purple-200 shadow-md">
+            <img 
+              src={avatarImage} 
+              alt="Avatar do usuário"
+              className="w-full h-full object-cover"
+            />
+          </div>
+          <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-purple-500 rounded-full border-2 border-white flex items-center justify-center">
+            <div className="w-2 h-2 bg-white rounded-full"></div>
+          </div>
         </div>
       </div>
 

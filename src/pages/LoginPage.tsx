@@ -9,35 +9,35 @@ import { useNavigate } from 'react-router-dom';
 
 const avatarOptions = [
   { 
-    id: 'modern-woman', 
-    image: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=100&h=100&fit=crop&crop=face',
-    label: 'Moderna' 
+    id: 'cyber-girl', 
+    image: 'https://images.unsplash.com/photo-1544725176-7c40e5a71c5e?w=100&h=100&fit=crop&crop=face',
+    label: 'Cyber' 
   },
   { 
-    id: 'mage', 
-    image: 'https://images.unsplash.com/photo-1470813740244-df37b8c1edcb?w=100&h=100&fit=crop&crop=center',
-    label: 'Mago' 
+    id: 'mystic-scholar', 
+    image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face',
+    label: 'Místico' 
   },
   { 
-    id: 'tech-person', 
-    image: 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=100&h=100&fit=crop&crop=face',
-    label: 'Tech' 
-  },
-  { 
-    id: 'robot-knight', 
-    image: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=100&h=100&fit=crop&crop=center',
-    label: 'Cavaleiro' 
-  },
-  { 
-    id: 'scholar', 
+    id: 'urban-explorer', 
     image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face',
-    label: 'Estudioso' 
+    label: 'Explorador' 
+  },
+  { 
+    id: 'creative-mind', 
+    image: 'https://images.unsplash.com/photo-1494790108755-2616b612b1e5?w=100&h=100&fit=crop&crop=face',
+    label: 'Criativa' 
+  },
+  { 
+    id: 'wise-guardian', 
+    image: 'https://images.unsplash.com/photo-1566492031773-4f4e44671d66?w=100&h=100&fit=crop&crop=face',
+    label: 'Guardião' 
   },
 ];
 
 const LoginPage: React.FC = () => {
   const navigate = useNavigate();
-  const [selectedAvatar, setSelectedAvatar] = useState('modern-woman');
+  const [selectedAvatar, setSelectedAvatar] = useState('cyber-girl');
   const [loginData, setLoginData] = useState({
     email: '',
     password: ''
@@ -54,8 +54,22 @@ const LoginPage: React.FC = () => {
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     console.log('Login:', loginData);
-    localStorage.setItem('isLoggedIn', 'true');
-    localStorage.setItem('userAvatar', selectedAvatar);
+    
+    // Busca dados do usuário baseado no email
+    const userData = localStorage.getItem(`user_${loginData.email}`);
+    if (userData) {
+      const user = JSON.parse(userData);
+      localStorage.setItem('isLoggedIn', 'true');
+      localStorage.setItem('currentUserEmail', loginData.email);
+      localStorage.setItem('userAvatar', user.avatar);
+      localStorage.setItem('userName', user.fullName);
+    } else {
+      localStorage.setItem('isLoggedIn', 'true');
+      localStorage.setItem('currentUserEmail', loginData.email);
+      localStorage.setItem('userAvatar', selectedAvatar);
+      localStorage.setItem('userName', 'Usuário');
+    }
+    
     navigate('/home');
   };
 
@@ -65,10 +79,26 @@ const LoginPage: React.FC = () => {
       alert('As senhas não coincidem');
       return;
     }
+    
     console.log('Cadastro:', registerData, 'Avatar:', selectedAvatar);
+    
+    // Salva dados do usuário com chave única baseada no email
+    const userData = {
+      fullName: registerData.fullName,
+      cpf: registerData.cpf,
+      phone: registerData.phone,
+      email: registerData.email,
+      avatar: selectedAvatar,
+      favoriteBooks: [],
+      reservedBooks: []
+    };
+    
+    localStorage.setItem(`user_${registerData.email}`, JSON.stringify(userData));
     localStorage.setItem('isLoggedIn', 'true');
+    localStorage.setItem('currentUserEmail', registerData.email);
     localStorage.setItem('userAvatar', selectedAvatar);
     localStorage.setItem('userName', registerData.fullName);
+    
     navigate('/home');
   };
 
@@ -196,12 +226,17 @@ const LoginPage: React.FC = () => {
                             : 'border-gray-200 hover:border-gray-300'
                         }`}
                       >
-                        <img 
-                          src={option.image} 
-                          alt={option.label}
-                          className="w-12 h-12 rounded-full object-cover mb-1"
-                        />
-                        <span className="text-xs">{option.label}</span>
+                        <div className="relative">
+                          <img 
+                            src={option.image} 
+                            alt={option.label}
+                            className="w-12 h-12 rounded-full object-cover mb-1 border-2 border-white shadow-md"
+                          />
+                          <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-purple-500 rounded-full border-2 border-white flex items-center justify-center">
+                            <div className="w-2 h-2 bg-white rounded-full"></div>
+                          </div>
+                        </div>
+                        <span className="text-xs font-medium">{option.label}</span>
                       </button>
                     ))}
                   </div>

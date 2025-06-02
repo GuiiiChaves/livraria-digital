@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { api } from '../services/api';
 
@@ -28,6 +27,14 @@ interface BookContextType {
 
 // Create context
 const BookContext = createContext<BookContextType | undefined>(undefined);
+
+const avatarMap: Record<string, string> = {
+  'cyber-girl': 'https://images.unsplash.com/photo-1544725176-7c40e5a71c5e?w=100&h=100&fit=crop&crop=face',
+  'mystic-scholar': 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face',
+  'urban-explorer': 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face',
+  'creative-mind': 'https://images.unsplash.com/photo-1494790108755-2616b612b1e5?w=100&h=100&fit=crop&crop=face',
+  'wise-guardian': 'https://images.unsplash.com/photo-1566492031773-4f4e44671d66?w=100&h=100&fit=crop&crop=face',
+};
 
 // Sample data
 const sampleBooks: Book[] = [
@@ -70,28 +77,50 @@ export const BookProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [favoriteBooks, setFavoriteBooks] = useState<string[]>([]);
   const [reservedBooks, setReservedBooks] = useState<string[]>([]);
 
-  // Carrega favoritos do localStorage
+  const getCurrentUserEmail = () => localStorage.getItem('currentUserEmail');
+  
+  const getUserData = () => {
+    const email = getCurrentUserEmail();
+    if (!email) return null;
+    
+    const userData = localStorage.getItem(`user_${email}`);
+    return userData ? JSON.parse(userData) : null;
+  };
+
+  const updateUserData = (updates: any) => {
+    const email = getCurrentUserEmail();
+    if (!email) return;
+    
+    const userData = getUserData() || {};
+    const updatedData = { ...userData, ...updates };
+    localStorage.setItem(`user_${email}`, JSON.stringify(updatedData));
+  };
+
+  // Carrega dados personalizados do usuário
   useEffect(() => {
-    const fav = localStorage.getItem('favoriteBooks');
-    if (fav) setFavoriteBooks(JSON.parse(fav));
+    const userData = getUserData();
+    if (userData) {
+      setFavoriteBooks(userData.favoriteBooks || []);
+      setReservedBooks(userData.reservedBooks || []);
+    }
   }, []);
 
-  // Persiste favoritos
+  // Persiste favoritos no perfil do usuário
   useEffect(() => {
-    localStorage.setItem('favoriteBooks', JSON.stringify(favoriteBooks));
+    updateUserData({ favoriteBooks });
   }, [favoriteBooks]);
 
-  // Carrega reservas do back-end
+  // Persiste reservas no perfil do usuário
   useEffect(() => {
-    fetchReservedBooks();
-  }, []);
+    updateUserData({ reservedBooks });
+  }, [reservedBooks]);
 
   const fetchReservedBooks = async () => {
     try {
       const { data } = await api.get<{ book: Book }[]>('/reservations');
-      // supondo retorno [ { book: Book, … }, … ]
       const ids = data.map(r => r.book.id);
       setReservedBooks(ids);
+      updateUserData({ reservedBooks: ids });
     } catch (err) {
       console.error('Erro ao buscar reservas:', err);
     }
@@ -112,7 +141,6 @@ export const BookProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const reserveBook = async (bookId: string) => {
     try {
       await api.post('/reservations', { bookId });
-      // após criar, recarrega lista
       await fetchReservedBooks();
     } catch (err) {
       console.error('Erro ao reservar livro:', err);
@@ -126,8 +154,9 @@ export const BookProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const cancelReservation = async (bookId: string) => {
     try {
       await api.delete(`/reservations/${bookId}`);
-      // atualiza imediatamente para UX
-      setReservedBooks(prev => prev.filter(id => id !== bookId));
+      const newReservedBooks = reservedBooks.filter(id => id !== bookId);
+      setReservedBooks(newReservedBooks);
+      updateUserData({ reservedBooks: newReservedBooks });
     } catch (err) {
       console.error('Erro ao cancelar reserva:', err);
     }
