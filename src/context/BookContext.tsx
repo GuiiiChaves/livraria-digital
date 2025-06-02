@@ -1,5 +1,6 @@
-
+// src/context/BookContext.tsx
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { api } from '../services/api';
 
 // Define types
 export interface Book {
@@ -17,9 +18,9 @@ interface BookContextType {
   reservedBooks: string[];
   toggleFavorite: (bookId: string) => void;
   isFavorite: (bookId: string) => boolean;
-  reserveBook: (bookId: string) => void;
+  reserveBook: (bookId: string) => Promise<void>;
   isReserved: (bookId: string) => boolean;
-  cancelReservation: (bookId: string) => void;
+  cancelReservation: (bookId: string) => Promise<void>;
   getBooksByCategory: (category: string) => Book[];
   getBookById: (id: string) => Book | undefined;
   getReservedBooks: () => Book[];
@@ -64,67 +65,72 @@ const sampleBooks: Book[] = [
   }
 ];
 
-// Provider component
 export const BookProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [books] = useState<Book[]>(sampleBooks);
   const [favoriteBooks, setFavoriteBooks] = useState<string[]>([]);
   const [reservedBooks, setReservedBooks] = useState<string[]>([]);
 
-  // Load favorites from localStorage
+  // Carrega favoritos do localStorage
   useEffect(() => {
-    const savedFavorites = localStorage.getItem('favoriteBooks');
-    if (savedFavorites) {
-      setFavoriteBooks(JSON.parse(savedFavorites));
-    }
+    const fav = localStorage.getItem('favoriteBooks');
+    if (fav) setFavoriteBooks(JSON.parse(fav));
   }, []);
 
-  // Load reserved books from localStorage
-  useEffect(() => {
-    const savedReserved = localStorage.getItem('reservedBooks');
-    if (savedReserved) {
-      setReservedBooks(JSON.parse(savedReserved));
-    }
-  }, []);
-
-  // Save favorites to localStorage
+  // Persiste favoritos
   useEffect(() => {
     localStorage.setItem('favoriteBooks', JSON.stringify(favoriteBooks));
   }, [favoriteBooks]);
 
-  // Save reserved books to localStorage
+  // Carrega reservas do back-end
   useEffect(() => {
-    localStorage.setItem('reservedBooks', JSON.stringify(reservedBooks));
-  }, [reservedBooks]);
+    fetchReservedBooks();
+  }, []);
+
+  const fetchReservedBooks = async () => {
+    try {
+      const { data } = await api.get<{ book: Book }[]>('/reservations');
+      // supondo retorno [ { book: Book, … }, … ]
+      const ids = data.map(r => r.book.id);
+      setReservedBooks(ids);
+    } catch (err) {
+      console.error('Erro ao buscar reservas:', err);
+    }
+  };
 
   const toggleFavorite = (bookId: string) => {
-    setFavoriteBooks(prev => {
-      if (prev.includes(bookId)) {
-        return prev.filter(id => id !== bookId);
-      } else {
-        return [...prev, bookId];
-      }
-    });
+    setFavoriteBooks(prev =>
+      prev.includes(bookId)
+        ? prev.filter(id => id !== bookId)
+        : [...prev, bookId]
+    );
   };
 
   const isFavorite = (bookId: string): boolean => {
     return favoriteBooks.includes(bookId);
   };
 
-  const reserveBook = (bookId: string) => {
-    setReservedBooks(prev => {
-      if (!prev.includes(bookId)) {
-        return [...prev, bookId];
-      }
-      return prev;
-    });
+  const reserveBook = async (bookId: string) => {
+    try {
+      await api.post('/reservations', { bookId });
+      // após criar, recarrega lista
+      await fetchReservedBooks();
+    } catch (err) {
+      console.error('Erro ao reservar livro:', err);
+    }
   };
 
   const isReserved = (bookId: string): boolean => {
     return reservedBooks.includes(bookId);
   };
 
-  const cancelReservation = (bookId: string) => {
-    setReservedBooks(prev => prev.filter(id => id !== bookId));
+  const cancelReservation = async (bookId: string) => {
+    try {
+      await api.delete(`/reservations/${bookId}`);
+      // atualiza imediatamente para UX
+      setReservedBooks(prev => prev.filter(id => id !== bookId));
+    } catch (err) {
+      console.error('Erro ao cancelar reserva:', err);
+    }
   };
 
   const getBooksByCategory = (category: string): Book[] => {
@@ -159,10 +165,9 @@ export const BookProvider: React.FC<{ children: React.ReactNode }> = ({ children
   );
 };
 
-// Custom hook to use the context
-export const useBooks = () => {
+export const useBooks = (): BookContextType => {
   const context = useContext(BookContext);
-  if (context === undefined) {
+  if (!context) {
     throw new Error('useBooks must be used within a BookProvider');
   }
   return context;
