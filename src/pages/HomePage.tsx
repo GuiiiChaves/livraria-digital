@@ -23,11 +23,11 @@ const categoryToFilterMap: Record<string, string> = {
 };
 
 const avatarMap: Record<string, string> = {
-  'cyber-girl': 'https://images.unsplash.com/photo-1544725176-7c40e5a71c5e?w=100&h=100&fit=crop&crop=face',
-  'mystic-scholar': 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face',
-  'urban-explorer': 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face',
-  'creative-mind': 'https://images.unsplash.com/photo-1494790108755-2616b612b1e5?w=100&h=100&fit=crop&crop=face',
-  'wise-guardian': 'https://images.unsplash.com/photo-1566492031773-4f4e44671d66?w=100&h=100&fit=crop&crop=face',
+  'cyber-girl': 'https://img.freepik.com/vetores-premium/robo-bonito-icon-ilustracao-conceito-de-icone-de-robo-de-tecnologia-isolado-estilo-cartoon-plana_138676-1219.jpg',
+  'mystic-scholar': 'https://cdn-icons-png.flaticon.com/512/2793/2793202.png',
+  'urban-explorer': 'https://cdn-icons-png.flaticon.com/512/5230/5230440.png',
+  'creative-mind': 'https://img.freepik.com/vetores-premium/uma-rapariga-bonita-vestida-de-detective-com-uma-lupa-de-vetor-de-desenho-animado_1080480-51566.jpg?semt=ais_hybrid&w=740',
+  'wise-guardian': 'https://cdn-icons-png.flaticon.com/512/2278/2278606.png',
 };
 
 const HomePage: React.FC = () => {

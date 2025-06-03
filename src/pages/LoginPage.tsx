@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -16,7 +15,7 @@ const avatarOptions = [
   { 
     id: 'mystic-scholar', 
     image: 'https://cdn-icons-png.flaticon.com/512/2793/2793202.png',
-    label: 'Mago' 
+    label: 'Místico' 
   },
   { 
     id: 'urban-explorer', 
@@ -31,7 +30,7 @@ const avatarOptions = [
   { 
     id: 'wise-guardian', 
     image: 'https://cdn-icons-png.flaticon.com/512/2278/2278606.png',
-    label: 'Jogador' 
+    label: 'Gamer' 
   },
 ];
 
@@ -50,25 +49,33 @@ const LoginPage: React.FC = () => {
     password: '',
     confirmPassword: ''
   });
+  const [loginError, setLoginError] = useState('');
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
+    setLoginError('');
+    
     console.log('Login:', loginData);
     
-    // Busca dados do usuário baseado no email
+    // Verifica se o usuário existe
     const userData = localStorage.getItem(`user_${loginData.email}`);
-    if (userData) {
-      const user = JSON.parse(userData);
-      localStorage.setItem('isLoggedIn', 'true');
-      localStorage.setItem('currentUserEmail', loginData.email);
-      localStorage.setItem('userAvatar', user.avatar);
-      localStorage.setItem('userName', user.fullName);
-    } else {
-      localStorage.setItem('isLoggedIn', 'true');
-      localStorage.setItem('currentUserEmail', loginData.email);
-      localStorage.setItem('userAvatar', selectedAvatar);
-      localStorage.setItem('userName', 'Usuário');
+    if (!userData) {
+      setLoginError('Usuário não encontrado. Por favor, faça seu cadastro primeiro.');
+      return;
     }
+    
+    const user = JSON.parse(userData);
+    
+    // Simula validação de senha (em um app real, você verificaria a senha)
+    if (loginData.password.length < 3) {
+      setLoginError('Senha inválida.');
+      return;
+    }
+    
+    localStorage.setItem('isLoggedIn', 'true');
+    localStorage.setItem('currentUserEmail', loginData.email);
+    localStorage.setItem('userAvatar', user.avatar);
+    localStorage.setItem('userName', user.fullName);
     
     navigate('/home');
   };
@@ -80,6 +87,13 @@ const LoginPage: React.FC = () => {
       return;
     }
     
+    // Verifica se usuário já existe
+    const existingUser = localStorage.getItem(`user_${registerData.email}`);
+    if (existingUser) {
+      alert('Usuário já existe. Faça login.');
+      return;
+    }
+    
     console.log('Cadastro:', registerData, 'Avatar:', selectedAvatar);
     
     // Salva dados do usuário com chave única baseada no email
@@ -88,6 +102,7 @@ const LoginPage: React.FC = () => {
       cpf: registerData.cpf,
       phone: registerData.phone,
       email: registerData.email,
+      password: registerData.password, // Em um app real, nunca salve senhas em texto plano
       avatar: selectedAvatar,
       favoriteBooks: [],
       reservedBooks: []
@@ -118,6 +133,11 @@ const LoginPage: React.FC = () => {
             
             <TabsContent value="login" className="space-y-4">
               <form onSubmit={handleLogin} className="space-y-4">
+                {loginError && (
+                  <div className="p-3 bg-red-50 border border-red-200 rounded-md">
+                    <p className="text-sm text-red-600">{loginError}</p>
+                  </div>
+                )}
                 <div className="space-y-2">
                   <Label htmlFor="email">Email</Label>
                   <Input
@@ -235,6 +255,3 @@ const LoginPage: React.FC = () => {
 };
 
 export default LoginPage;
-
-
-
