@@ -1,3 +1,4 @@
+
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { api } from '../services/api';
 
@@ -115,17 +116,6 @@ export const BookProvider: React.FC<{ children: React.ReactNode }> = ({ children
     updateUserData({ reservedBooks });
   }, [reservedBooks]);
 
-  const fetchReservedBooks = async () => {
-    try {
-      const { data } = await api.get<{ book: Book }[]>('/reservations');
-      const ids = data.map(r => r.book.id);
-      setReservedBooks(ids);
-      updateUserData({ reservedBooks: ids });
-    } catch (err) {
-      console.error('Erro ao buscar reservas:', err);
-    }
-  };
-
   const toggleFavorite = (bookId: string) => {
     setFavoriteBooks(prev =>
       prev.includes(bookId)
@@ -140,15 +130,28 @@ export const BookProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const reserveBook = async (bookId: string) => {
     try {
+      console.log('Reservando livro:', bookId);
+      
+      // Simula a API call
       await api.post('/reservations', { bookId });
-      await fetchReservedBooks();
+      
+      // Atualiza o estado local imediatamente
+      const newReservedBooks = [...reservedBooks, bookId];
+      setReservedBooks(newReservedBooks);
+      updateUserData({ reservedBooks: newReservedBooks });
+      
+      console.log('Livro reservado com sucesso:', bookId);
+      console.log('Livros reservados atualizados:', newReservedBooks);
     } catch (err) {
       console.error('Erro ao reservar livro:', err);
     }
   };
 
   const isReserved = (bookId: string): boolean => {
-    return reservedBooks.includes(bookId);
+    const isReservedResult = reservedBooks.includes(bookId);
+    console.log(`Verificando se livro ${bookId} está reservado:`, isReservedResult);
+    console.log('Lista de reservados atual:', reservedBooks);
+    return isReservedResult;
   };
 
   const cancelReservation = async (bookId: string) => {
