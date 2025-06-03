@@ -116,23 +116,30 @@ export const BookProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return result;
   };
 
-  // Carrega dados personalizados do usuário
+  // Carrega dados personalizados do usuário logado
   useEffect(() => {
     const userData = getUserData();
     if (userData) {
       setFavoriteBooks(userData.favoriteBooks || []);
       setReservedBooks(userData.reservedBooks || []);
       
-      // Carrega livros bloqueados e converte as datas de string para Date
+      // Carrega livros bloqueados específicos deste usuário
       if (userData.blockedBooks) {
         const blocked: Record<string, Date> = {};
         Object.entries(userData.blockedBooks).forEach(([bookId, dateString]) => {
           blocked[bookId] = new Date(dateString as string);
         });
         setBlockedBooks(blocked);
+      } else {
+        setBlockedBooks({});
       }
+    } else {
+      // Se não há usuário logado, limpa todos os dados
+      setFavoriteBooks([]);
+      setReservedBooks([]);
+      setBlockedBooks({});
     }
-  }, []);
+  }, [getCurrentUserEmail()]);
 
   // Persiste favoritos no perfil do usuário
   useEffect(() => {
@@ -144,8 +151,11 @@ export const BookProvider: React.FC<{ children: React.ReactNode }> = ({ children
     updateUserData({ reservedBooks });
   }, [reservedBooks]);
 
-  // Persiste livros bloqueados no perfil do usuário
+  // Persiste livros bloqueados específicos do usuário no perfil do usuário
   useEffect(() => {
+    const email = getCurrentUserEmail();
+    if (!email) return;
+    
     // Converte as datas para string antes de salvar
     const blockedBooksToSave: Record<string, string> = {};
     Object.entries(blockedBooks).forEach(([bookId, date]) => {
@@ -221,19 +231,25 @@ export const BookProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const cancelReservation = async (bookId: string) => {
     try {
+      const email = getCurrentUserEmail();
+      if (!email) {
+        console.error('Usuário não logado');
+        return;
+      }
+
       await api.delete(`/reservations/${bookId}`);
       
-      // Remove o livro das reservas
+      // Remove o livro das reservas do usuário atual
       const newReservedBooks = reservedBooks.filter(id => id !== bookId);
       setReservedBooks(newReservedBooks);
       updateUserData({ reservedBooks: newReservedBooks });
       
-      // Adiciona o livro aos bloqueados por 3 dias úteis
+      // Adiciona o livro aos bloqueados por 3 dias úteis apenas para este usuário
       const blockUntil = addBusinessDays(new Date(), 3);
       const newBlockedBooks = { ...blockedBooks, [bookId]: blockUntil };
       setBlockedBooks(newBlockedBooks);
       
-      console.log(`Livro ${bookId} foi cancelado e bloqueado até ${blockUntil.toLocaleDateString()}`);
+      console.log(`Livro ${bookId} foi cancelado e bloqueado até ${blockUntil.toLocaleDateString()} para o usuário ${email}`);
     } catch (err) {
       console.error('Erro ao cancelar reserva:', err);
     }
