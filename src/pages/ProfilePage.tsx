@@ -55,7 +55,7 @@ const ProfilePage: React.FC = () => {
       <Tabs defaultValue="reviews" className="w-full">
         <TabsList className="grid w-full grid-cols-2 mb-2">
           <TabsTrigger value="reviews" className="text-sm">Avaliações</TabsTrigger>
-          <TabsTrigger value="settings" className="text-sm">Configurações</TabsTrigger>
+          <TabsTrigger value="settings" className="text-sm">Gerenciar Conta</TabsTrigger>
         </TabsList>
         <TabsContent value="reviews">
           <ReviewsTab />
