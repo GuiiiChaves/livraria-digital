@@ -29,7 +29,7 @@ const avatarOptions = [
   },
   { 
     id: 'wise-guardian', 
-    image: 'https://cdn-icons-png.flaticon.com/512/2278/2278606.png',
+    image: 'https://cdn-icons-png.flaticon.com/512/3900/3900692.png',
     label: 'Gamer' 
   },
 ];
