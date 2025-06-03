@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { api } from '../services/api';
 
@@ -16,6 +15,7 @@ interface BookContextType {
   books: Book[];
   favoriteBooks: string[];
   reservedBooks: string[];
+  blockedBooks: Record<string, Date>;
   toggleFavorite: (bookId: string) => void;
   isFavorite: (bookId: string) => boolean;
   reserveBook: (bookId: string) => Promise<void>;
@@ -24,6 +24,8 @@ interface BookContextType {
   getBooksByCategory: (category: string) => Book[];
   getBookById: (id: string) => Book | undefined;
   getReservedBooks: () => Book[];
+  isBookBlocked: (bookId: string) => boolean;
+  getDaysUntilUnblocked: (bookId: string) => number;
 }
 
 // Create context
@@ -77,6 +79,7 @@ export const BookProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [books] = useState<Book[]>(sampleBooks);
   const [favoriteBooks, setFavoriteBooks] = useState<string[]>([]);
   const [reservedBooks, setReservedBooks] = useState<string[]>([]);
+  const [blockedBooks, setBlockedBooks] = useState<Record<string, Date>>({});
 
   const getCurrentUserEmail = () => localStorage.getItem('currentUserEmail');
   
@@ -97,12 +100,37 @@ export const BookProvider: React.FC<{ children: React.ReactNode }> = ({ children
     localStorage.setItem(`user_${email}`, JSON.stringify(updatedData));
   };
 
+  // Helper function to calculate business days
+  const addBusinessDays = (date: Date, days: number): Date => {
+    const result = new Date(date);
+    let daysAdded = 0;
+    
+    while (daysAdded < days) {
+      result.setDate(result.getDate() + 1);
+      // Skip weekends (Saturday = 6, Sunday = 0)
+      if (result.getDay() !== 0 && result.getDay() !== 6) {
+        daysAdded++;
+      }
+    }
+    
+    return result;
+  };
+
   // Carrega dados personalizados do usuário
   useEffect(() => {
     const userData = getUserData();
     if (userData) {
       setFavoriteBooks(userData.favoriteBooks || []);
       setReservedBooks(userData.reservedBooks || []);
+      
+      // Carrega livros bloqueados e converte as datas de string para Date
+      if (userData.blockedBooks) {
+        const blocked: Record<string, Date> = {};
+        Object.entries(userData.blockedBooks).forEach(([bookId, dateString]) => {
+          blocked[bookId] = new Date(dateString as string);
+        });
+        setBlockedBooks(blocked);
+      }
     }
   }, []);
 
@@ -116,6 +144,16 @@ export const BookProvider: React.FC<{ children: React.ReactNode }> = ({ children
     updateUserData({ reservedBooks });
   }, [reservedBooks]);
 
+  // Persiste livros bloqueados no perfil do usuário
+  useEffect(() => {
+    // Converte as datas para string antes de salvar
+    const blockedBooksToSave: Record<string, string> = {};
+    Object.entries(blockedBooks).forEach(([bookId, date]) => {
+      blockedBooksToSave[bookId] = date.toISOString();
+    });
+    updateUserData({ blockedBooks: blockedBooksToSave });
+  }, [blockedBooks]);
+
   const toggleFavorite = (bookId: string) => {
     setFavoriteBooks(prev =>
       prev.includes(bookId)
@@ -128,8 +166,35 @@ export const BookProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return favoriteBooks.includes(bookId);
   };
 
+  const isBookBlocked = (bookId: string): boolean => {
+    const blockDate = blockedBooks[bookId];
+    if (!blockDate) return false;
+    
+    const now = new Date();
+    return now < blockDate;
+  };
+
+  const getDaysUntilUnblocked = (bookId: string): number => {
+    const blockDate = blockedBooks[bookId];
+    if (!blockDate) return 0;
+    
+    const now = new Date();
+    if (now >= blockDate) return 0;
+    
+    const diffTime = blockDate.getTime() - now.getTime();
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return diffDays;
+  };
+
   const reserveBook = async (bookId: string) => {
     try {
+      // Verifica se o livro está bloqueado
+      if (isBookBlocked(bookId)) {
+        const daysLeft = getDaysUntilUnblocked(bookId);
+        console.error(`Livro ${bookId} está bloqueado. ${daysLeft} dias restantes.`);
+        return;
+      }
+
       console.log('Reservando livro:', bookId);
       
       // Simula a API call
@@ -157,9 +222,18 @@ export const BookProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const cancelReservation = async (bookId: string) => {
     try {
       await api.delete(`/reservations/${bookId}`);
+      
+      // Remove o livro das reservas
       const newReservedBooks = reservedBooks.filter(id => id !== bookId);
       setReservedBooks(newReservedBooks);
       updateUserData({ reservedBooks: newReservedBooks });
+      
+      // Adiciona o livro aos bloqueados por 3 dias úteis
+      const blockUntil = addBusinessDays(new Date(), 3);
+      const newBlockedBooks = { ...blockedBooks, [bookId]: blockUntil };
+      setBlockedBooks(newBlockedBooks);
+      
+      console.log(`Livro ${bookId} foi cancelado e bloqueado até ${blockUntil.toLocaleDateString()}`);
     } catch (err) {
       console.error('Erro ao cancelar reserva:', err);
     }
@@ -183,6 +257,7 @@ export const BookProvider: React.FC<{ children: React.ReactNode }> = ({ children
       books,
       favoriteBooks,
       reservedBooks,
+      blockedBooks,
       toggleFavorite,
       isFavorite,
       reserveBook,
@@ -190,7 +265,9 @@ export const BookProvider: React.FC<{ children: React.ReactNode }> = ({ children
       cancelReservation,
       getBooksByCategory,
       getBookById,
-      getReservedBooks
+      getReservedBooks,
+      isBookBlocked,
+      getDaysUntilUnblocked
     }}>
       {children}
     </BookContext.Provider>
