@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useBooks } from '../context/BookContext';
+import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import BookCard from '../components/BookCard';
 import CategoryButton from '../components/CategoryButton';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { LogOut } from 'lucide-react';
 
 const categories = [
   { id: 'all', label: 'Todos', icon: 'https://cdn-icons-png.flaticon.com/512/3845/3845826.png' },
@@ -35,6 +38,7 @@ const HomePage: React.FC = () => {
   const [activeCategory, setActiveCategory] = useState('all');
   const [userName, setUserName] = useState('Usuário');
   const [userAvatar, setUserAvatar] = useState('cyber-girl');
+  const navigate = useNavigate();
 
   useEffect(() => {
     const storedName = localStorage.getItem('userName');
@@ -43,6 +47,14 @@ const HomePage: React.FC = () => {
     if (storedName) setUserName(storedName);
     if (storedAvatar) setUserAvatar(storedAvatar);
   }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('currentUserEmail');
+    localStorage.removeItem('userAvatar');
+    localStorage.removeItem('userName');
+    navigate('/login');
+  };
 
   const filteredBooks = getBooksByCategory(categoryToFilterMap[activeCategory]);
   const avatarImage = avatarMap[userAvatar] || avatarMap['cyber-girl'];
@@ -55,16 +67,28 @@ const HomePage: React.FC = () => {
           <p className="text-sm text-gray-500">O que vamos descobrir hoje?</p>
         </div>
         <div className="relative">
-          <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-purple-200 shadow-md">
-            <img 
-              src={avatarImage} 
-              alt="Avatar do usuário"
-              className="w-full h-full object-cover"
-            />
-          </div>
-          <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-purple-500 rounded-full border-2 border-white flex items-center justify-center">
-            <div className="w-2 h-2 bg-white rounded-full"></div>
-          </div>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button className="relative focus:outline-none">
+                <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-purple-200 shadow-md hover:border-purple-300 transition-colors cursor-pointer">
+                  <img 
+                    src={avatarImage} 
+                    alt="Avatar do usuário"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-purple-500 rounded-full border-2 border-white flex items-center justify-center">
+                  <div className="w-2 h-2 bg-white rounded-full"></div>
+                </div>
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-48">
+              <DropdownMenuItem onClick={handleLogout} className="cursor-pointer text-red-600 focus:text-red-600">
+                <LogOut className="mr-2 h-4 w-4" />
+                Sair da Conta
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       </div>
 
